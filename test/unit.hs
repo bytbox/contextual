@@ -25,12 +25,12 @@ myCont1 = Poly
 
 myOut1 = "a\nb\n  c\n    d\n  e\ne\n  f\ng\n"
 
-indentRaw :: Int -> String -> String
-indentRaw n c = (concat $ take n $ repeat "  ") ++ c ++ "\n"
+indentRaw :: NumRC Int -> String -> String
+indentRaw (NumRC n) c = (concat $ take n $ repeat "  ") ++ c ++ "\n"
 
-instance RenderC Cont1 Int [Char] where
+instance RenderC Cont1 (NumRC Int) [Char] where
   renderC (Raw s) = get >>= return . flip indentRaw s
-  renderC (Sub d) = push (+1) $ renderC d
+  renderC (Sub d) = push (\(NumRC n) -> NumRC $ n+1) $ renderC d
   renderC (Poly cs) = (sequence $ map renderC cs) >>= return . concat
 
 testRender1 = TestCase $ assertEqual "Failure" myOut1 $ render myCont1

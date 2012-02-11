@@ -12,6 +12,13 @@
 >   RenderContext(..)
 > , RenderC(..)
 
+* Contexts
+|
+These are some very simple contexts from which more elaborate, useful contexts
+may be constructed.
+
+> , NumRC(..)
+
 * Combinators
 
 > , push
@@ -36,15 +43,20 @@ value.
 
 > class RenderContext s where
 >   initC :: s
+
+|
+A numeric rendering context.
+
+> data Num n => NumRC n = NumRC n
 >
 > instance RenderContext () where
 >   initC = ()
 > 
 > instance RenderContext [a] where
 >   initC = []
-> 
-> instance RenderContext Int where
->   initC = 0
+>
+> instance Num n => RenderContext (NumRC n) where
+>   initC = NumRC 0
 >
 > tupInstances [2..4] ''RenderContext 'initC
 
