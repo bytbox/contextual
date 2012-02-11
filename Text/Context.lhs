@@ -43,21 +43,29 @@ value.
 
 > class RenderContext s where
 >   initC :: s
-
-|
-A numeric rendering context.
-
-> data Num n => NumRC n = NumRC n
 >
 > instance RenderContext () where
 >   initC = ()
 > 
 > instance RenderContext [a] where
 >   initC = []
+
+|
+A numeric rendering context.
+
+> data Num n => NumRC n = NumRC n
+>   deriving (Show, Eq)
+>
+> instance Num n => Num (NumRC n) where
+>   (+) (NumRC a) (NumRC b) = NumRC $ a + b
+>   (*) (NumRC a) (NumRC b) = NumRC $ a * b
+>   abs (NumRC n) = NumRC $ abs n
+>   signum (NumRC n) = NumRC $ signum n
+>   fromInteger = NumRC . fromInteger
 >
 > instance Num n => RenderContext (NumRC n) where
->   initC = NumRC 0
->
+>   initC = 0
+
 > tupInstances [2..4] ''RenderContext 'initC
 
 > class RenderContext s => RenderC d s o | d o -> s where
