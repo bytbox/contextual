@@ -2,7 +2,6 @@
 
 module Main where
 
-import Data.Monoid
 import Test.HUnit
 import System.Exit (exitFailure, exitSuccess)
 
