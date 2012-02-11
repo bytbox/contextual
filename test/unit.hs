@@ -53,12 +53,11 @@ instance RenderC PToken ParenC [Char] where
     return $ if x then ")" else "]"
   renderC (PRaw s) = return s
 
+instance RenderC [PToken] ParenC [[Char]] where
+  renderC ds = sequence $ map renderC ds
+
 instance RenderC [PToken] ParenC [Char] where
-  renderC [] = return ""
-  renderC (t:ts) = do
-    to <- renderC t
-    ro <- renderC ts
-    return $ to ++ ro
+  renderC ds = renderC ds >>= return . concat
 
 instance RenderC PStream ParenC [Char] where
   renderC (PStream s) = renderC s

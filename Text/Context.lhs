@@ -26,6 +26,7 @@ not be used in general.
 > ) where
 
 > import Control.Monad.State
+> import Data.Monoid
 
 > import Util.TH
 
@@ -47,7 +48,7 @@ value.
 >
 > tupInstances [2..4] ''RenderContext 'initC
 
-> class RenderContext s => RenderC d s o | d -> s where
+> class RenderContext s => RenderC d s o | d o -> s where
 >   renderC       :: d -> State s o
 >   renderFrom    :: d -> s -> o
 >   render        :: d -> o
