@@ -67,9 +67,9 @@
 >   fromInteger = AddC . fromInteger
 
 > instance Num n => Context (AddC n) where
->   zero = AddC 0
->   pushC a b = a + b
->   popC a = a - 1
+>   zero = 0
+>   pushC = (+)
+>   popC a = (-1)
 
 > class Context c => RenderC d c o | d o -> c where
 >   renderC     :: d -> State c o
