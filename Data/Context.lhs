@@ -92,6 +92,11 @@ one to gauge depth but nothing else.
 >   pushC = (+)
 >   popC a = (-1)
 
+|
+This class describes a context-renderable object; that is, a data structure
+that may be transformed into another data structure with the help of some
+contextual state information.
+
 > class Context c => RenderC d c o | d o -> c where
 >   renderC     :: d -> State c o
 >   renderFrom  :: d -> c -> o
