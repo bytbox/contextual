@@ -7,7 +7,8 @@
 |
 This module provides the 'RenderC' instance allowing lists of data to be rendered
 into monoids. Note that we must use 'UndecidableInstances' to avoid the coverage
-condition.
+condition - code that uses this module should probably be isolated to avoid
+instance conflicts.
 
 > module Data.Context.List (
 >   RenderC

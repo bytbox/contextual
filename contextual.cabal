@@ -13,24 +13,24 @@ Build-type:          Simple
 Cabal-version:       >=1.10
 
 Library
-  Exposed-modules: Data.Context, Data.Context.List, Data.Context.Text
-  Build-depends: base >=4, template-haskell, mtl >=2.0
+  Exposed-modules: Data.Context, Data.Context.List, Data.Context.Text, Data.Context.ByteString
+  Build-depends: base >=4, template-haskell, mtl >=2.0, bytestring >=0.9
   Default-language: Haskell2010
   
 Test-Suite test-qc
   type: exitcode-stdio-1.0
   main-is: test/qc.hs
-  Build-depends: base >=4, template-haskell, mtl >=2.0, QuickCheck >= 2.4
+  Build-depends: base >=4, template-haskell, mtl >=2.0, bytestring >=0.9, QuickCheck >= 2.4
   Default-language: Haskell2010
 
 Test-Suite test-unit
   Type: exitcode-stdio-1.0
   Main-is: test/unit.hs
-  Build-depends: base >=4, template-haskell, mtl >=2.0, HUnit >=1.2
+  Build-depends: base >=4, template-haskell, mtl >=2.0, bytestring >=0.9, HUnit >=1.2
   Default-language: Haskell2010
 
 Test-Suite test-unit-list
   Type: exitcode-stdio-1.0
   Main-is: test/unit-list.hs
-  Build-depends: base >=4, template-haskell, mtl >=2.0, HUnit >=1.2
+  Build-depends: base >=4, template-haskell, mtl >=2.0, bytestring >=0.9, HUnit >=1.2
   Default-language: Haskell2010

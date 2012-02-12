@@ -40,6 +40,9 @@ These functions allow for more direct manipulation of rendering contexts.
 The following submodules may provide useful instance definitions and rendering
 contexts:
 
+  ["Data.Context.ByteString"]
+    Instances for 'RenderC' for outputing to 'ByteString's.
+
   ["Data.Context.List"]
     Instances for 'RenderC' for processing lists.
 
