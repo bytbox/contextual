@@ -1,11 +1,11 @@
-{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
 module Main where
 
 import Test.HUnit
 import System.Exit (exitFailure, exitSuccess)
 
-import Text.Context
+import Data.Context
 
 data Cont1 = Raw String | Sub Cont1 | Poly [Cont1]
 
@@ -22,33 +22,30 @@ myCont1 = Poly
   , Raw "g"
   ]
 
-myOut1 = "a\nb\n  c\n    d\n  e\ne\n  f\ng\n"
+myOut1 = "a\nb\n c\n  d\n e\ne\n f\ng\n"
 
-indentRaw :: NumRC Int -> String -> String
-indentRaw (NumRC n) c = (concat $ take n $ repeat "  ") ++ c ++ "\n"
+indentRaw :: AddC Int -> String -> String
+indentRaw (AddC n) c = (take n $ repeat ' ') ++ c ++ "\n"
 
-instance RenderC Cont1 (NumRC Int) [Char] where
+instance RenderC Cont1 (AddC Int) [Char] where
   renderC (Raw s) = get >>= return . flip indentRaw s
-  renderC (Sub d) = push (+1) $ renderC d
+  renderC (Sub d) = withPush (+1) $ renderC d
   renderC (Poly cs) = (sequence $ map renderC cs) >>= return . concat
 
 testRender1 = TestCase $ assertEqual "Failure" myOut1 $ render myCont1
 
 data PStream = PStream [PToken]
 data PToken = PLeft | PRight | PRaw String
-data ParenC = ParenC Bool
-
-instance RenderContext ParenC where
-  initC = ParenC False
+type ParenC = Bool
 
 instance RenderC PToken ParenC [Char] where
   renderC PLeft = do
-    ParenC x <- get
-    put $ ParenC $ not x
+    x <- get
+    put $ not x
     return $ if x then "[" else "("
   renderC PRight = do
-    ParenC x <- get
-    put $ ParenC $ not x
+    x <- get
+    put $ not x
     return $ if x then ")" else "]"
   renderC (PRaw s) = return s
 

@@ -1,21 +1,23 @@
-{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
 
 module Main where
 
 import System.Exit (exitSuccess, exitFailure)
 import Test.QuickCheck
 
-import Text.Context
+import Data.Context
 
 data AddState = AddState Int
 
-instance RenderContext AddState where
-  initC = AddState 0
+instance Context AddState where
+  zero = AddState 0
+  pushC (AddState a) (AddState b) = AddState $ a + b
+  popC (AddState a) = AddState $ a-1
 
 instance RenderC Int AddState Int where
   renderC i = do
-    AddState a <- get
-    return $ a+i
+    AddState x <- get
+    return $ i+x
 
 rAdd :: Int -> Int -> Int
 rAdd a b = renderFrom a $ AddState b
@@ -35,4 +37,3 @@ isSuccess _ = False
 main = do
   rs <- sequence $ map (\p -> quickCheckResult p >>= return . isSuccess) props
   if and rs then exitSuccess else exitFailure
---main = foldl (>>) (return ()) checks

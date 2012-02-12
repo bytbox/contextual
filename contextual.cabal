@@ -7,13 +7,13 @@ License:             BSD3
 License-file:        LICENSE
 Author:              Scott Lawrence
 Maintainer:          bytbox@gmail.com
-Category:            Text
+Category:            Data
 Build-type:          Simple
 -- Extra-source-files:  
 Cabal-version:       >=1.10
 
 Library
-  Exposed-modules: Text.Context
+  Exposed-modules: Data.Context, Data.Context.Text
   Other-modules: Util.TH
   Build-depends: base >=4, template-haskell, mtl >=2.0
   Default-language: Haskell2010
