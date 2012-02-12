@@ -4,6 +4,10 @@
 >   , FunctionalDependencies
 >   #-}
 
+|
+This module provides support for contextual processing (\"rendering\") of data
+structures, built on top of the 'State' monad.
+
 > module Data.Context (
 
 * Classes
@@ -12,29 +16,42 @@
 > , Context(..)
 
 * Rendering Contexts
+|
+We provide some minimal rendering contexts from which more capable rendering
+contexts may be created. For most purposes, it may be more appropriate to use
+the contexts provided in the various submodules, which should correlate to
+actual usage more closely.
 
-> , AddC(..)
+> , AddC(..), liftAC, liftAC2
 
 * Combinators
 
 > , withPush
 
 * Control.Monad.State
+|
+These functions allow for more direct manipulation of rendering contexts.
 
 > , get
 > , put
 
 * Submodules
+|
+The following submodules may provide useful instance definitions and rendering
+contexts:
 
-> , module Data.Context.Text
+  ["Data.Context.List"]
+    Instances for 'RenderC' for processing lists.
+
+  ["Data.Context.Text"]
+    Contexts and combinators specific to processing strings.
 
 > ) where
 
 > import Control.Monad.State
 
-> import Data.Context.Text
-
 > class Context s where
+>   -- | The initial state of this rendering context.
 >   zero  :: s
 >   pushC :: s -> s -> s
 >   popC  :: s -> s
@@ -52,6 +69,10 @@
 >   zero = False
 >   pushC a b = (a || b) && not (a && b)
 >   popC = not
+
+|
+A simple rendering context that acts like a stack of empty units, allowing
+one to gauge depth but nothing else.
 
 > data Num n => AddC n = AddC n
 >   deriving (Show, Eq)
@@ -77,6 +98,8 @@
 >   render      :: d -> o
 >   renderFrom d c = evalState (renderC d) c
 >   render = flip renderFrom zero
+
+| Executes a state in a context transformed by the given function.
 
 > withPush :: (c -> c) -> State c o -> State c o
 > withPush f s = do

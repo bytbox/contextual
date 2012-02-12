@@ -13,8 +13,7 @@ Build-type:          Simple
 Cabal-version:       >=1.10
 
 Library
-  Exposed-modules: Data.Context, Data.Context.Text
-  Other-modules: Util.TH
+  Exposed-modules: Data.Context, Data.Context.List, Data.Context.Text
   Build-depends: base >=4, template-haskell, mtl >=2.0
   Default-language: Haskell2010
   
